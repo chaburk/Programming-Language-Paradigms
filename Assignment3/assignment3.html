@@ -1,0 +1,113 @@
+<!--
+Author: Chase Burkdoll
+KUID: 3082972
+Date: 9/03/2022
+Assignment: Assignment 1
+Last modified: 9/17/2022
+Purpose: Create a function that takes a DOM node and creates a tabbed interface showing the child elements of that node.
+-->
+
+<!DOCTYPE html> <!--Declaration that tells the browser what version of HTML-->
+<html> <!--Opening tag for the container for all the other HTML elements-->
+    <head> <!--Head tag contains machine-readable information-->
+        <title>Burkdoll's Jayhawk Page</title> <!--Defines the title of the document that is shown in the browser's tab bar-->
+        <style>/*Style tag specifies how HTML Elements should render in the browser*/
+            body {/*Specifies which HTML element is being styled*/
+                text-align: center; /*Aligns the body elements horizontally along the screen*/
+            } /*Closing CSS selector*/
+            button { /*Specifies which HTML element is being styled*/
+                padding: 15px; /*creates space around an element's content inside borders*/
+                margin: 15px; /*creates space around an element's content outside borders*/
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /*Sets the font options for HTML element*/
+                border: 3px solid rgb(204, 204, 6); /*Creates a solid yellow border around the button element*/
+                border-radius: 5%; /*Rounds the corners of an element's outer border edge*/
+                background-color: blue; /*Sets the background color for the button element to blue*/
+                color: white;/*Sets the text color for the button element to white*/
+            } /*Closing CSS selector*/
+
+            div { /*Specifies which HTML element is being styled*/
+                font-size: 45px; /*Sets the size of the font for elements in the Div element to 45 pixels;
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /*Sets the font options for HTML element*/
+                margin-top: 15rem; /*creates space around an element's content top outside border*/
+            } /*Closing CSS selector*/
+
+            tab-panel > button.selected { /*styles the buttons that are direct children of tab-panel that have the "selected" class attribute */
+                background: #ff1100; /*Sets the background color for the active button element to red*/
+                color: #ffffff; /*Sets the text color for the button element to white*/
+            } /*Closing CSS selector*/
+
+            tab-panel > button.not-selected { /*styles the buttons that are direct children of tab-panel that have the "not-selected" class attribute */
+                background: blue; /*Sets the background color for the non-active button element to blue*/
+                color: white; /*Sets the text color for the button element to white*/
+            } /*Closing CSS selector*/
+
+            tab-panel > div[id].hidden { /*styles the div's IDs that are direct children of tab-panel that have the "hidden" class atrribute */
+                display: none; /*Sets the display to none, disappears from the screen*/
+            } /*Closing CSS selector*/
+
+        </style> <!--Closing style tag-->
+    </head> <!--Closing head tag-->
+    <body> <!--Opening body tag-->
+        <tab-panel> <!--tab-panel container that holds the Divs-->
+            <div id="Rock">Rock</div> <!--Div element that contains an ID and text-->
+            <div id="Chalk">Rock Chalk</div> <!--Div element that contains an ID and text-->
+            <div id="Jayhawk">Rock Chalk Jayhawk - Go KU!</div> <!--Div element that contains an ID and text-->
+        </tab-panel><!--Closing tab-pabel element tag-->
+
+
+        <script> //HTML tag that allows JavaScript
+            let activeTab; //Declaring variable
+            let currentBody; //Declaring variable
+
+            function changeTab(event){ //Function that takes an "on-click" event and changes the tab
+                activeTab.classList.remove("selected"); //Unassigns the "selected" class 
+                activeTab.classList.add("not-selected") //Assigns the old active tab the "not-selected" class
+                activeTab = event.target; //Takes the HTML element that the event was activated on and assigns it to activeTab variable
+                activeTab.classList.remove("not-selected") //Unassigns the "not-selected class to make the button the new active tab"
+                activeTab.classList.add("selected"); //Assigns activeTab the class "selected" to make it the new active tab
+
+                let tabContent = document.querySelectorAll("div"); //Declares variables to hold all the div in the document
+
+                currentBody.classList.toggle("hidden"); //Removes the "hidden" class from the currentBody variable to make it not the display text
+
+
+                switch(activeTab.textContent) { //Switch statement that compares the new active tab text content to div ids
+                    case "Rock": //if the new active tab text content is equal to "Rock" then execute" 
+                        currentBody = tabContent[0]; //Assigns the currentBody variable to the divs text content
+                        break; //Ends the case
+                    case "Chalk": //if the new active tab text content is equal to "Chalk" then execute" 
+                        currentBody = tabContent[1]; //Assigns the currentBody variable to the divs text content
+                        break; //Ends the case
+                    case "Jayhawk": //if the new active tab text content is equal to "Jayhawk" then execute" 
+                        currentBody = tabContent[2]; //Assigns the currentBody variable to the divs text content
+                        break; //Ends the case
+                }
+                currentBody.classList.toggle("hidden"); //Adds the "hidden" class to make it the new active body content
+
+            }
+            function asTabs(node) { //Function that takes a node as a parameter and then creates buttons from the node's children
+
+                let tabLength = node.children.length; //Declares variable to the amount of the children the node has
+
+                for (let i = 0; i < tabLength; i++){ //For loop that runs from zero to the length of the amount of children in the node
+                    let tabBtn = document.createElement("button"); //Declares variable to a newly created HTML button on the DOM
+                    tabBtn.textContent = document.querySelectorAll("div")[i].getAttribute("id"); //Assigns the new button's text equal to the id value in the ith div on the DOM 
+                    node.querySelectorAll("div")[i].classList.add("hidden"); //Makes the ith divs text content display to none by adding the "hidden" class
+                    tabBtn.addEventListener("click", changeTab) //Adds an "on-click" event listener to the new button that calls changeTab when activated
+                    node.insertBefore(tabBtn, document.querySelector("div")); //Inserts the new button onto the DOM before the div elements
+                } //End of for loop
+
+                activeTab = document.querySelector("button"); //Assigns the first button element to the variable activeTab
+                activeTab.classList.add("selected"); //Assigns activeTab the class "selected" to make it the default tab
+
+                currentBody = document.querySelector("div"); //Assigns the first div to the currentBody variable 
+                currentBody.classList.toggle("hidden"); //Adds the "hidden" class to the currentBody variable to make it the default text
+
+            }
+
+            asTabs(document.querySelector("tab-panel")); //Function call that passes in the HTML element "tab-panel" by using query selector to find element
+            
+
+        </script><!--End of style element-->
+    </body><!--End of body element-->
+</html> <!--Closing tag for html-->
