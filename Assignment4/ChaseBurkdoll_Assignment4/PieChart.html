@@ -1,0 +1,74 @@
+<!--
+Author: Chase Burkdoll
+KUID: 3082972
+Date: 9/17/2022
+Assignment: Assignment 4
+Last modified: 10/6/2022
+Purpose: Create two pie charts using js canvas
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Burkdoll's Pie Charts</title>
+</head>
+<body>
+    <canvas width="1000" height="1000"></canvas>
+    <script>
+        const resultsOne = [ //JavaScript array that contains the information for the first pie chart
+        {name: "Satisfied", count: 927, color: "lightblue"}, //Object that contains the name, count, and color for slice of the pie chart
+        {name: "Neutral", count: 463, color: "lightgreen"}, //Object that contains the name, count, and color for slice of the pie chart
+        {name: "Unsatisfied", count: 213, color: "pink"}, //Object that contains the name, count, and color for slice of the pie chart
+        {name: "No Comment", count: 510, color: "silver"} //Object that contains the name, count, and color for slice of the pie chart
+        ]; // end of JavaScript array
+        const resultsTwo = [ //JavaScript array that contains the information for the first pie chart
+        {name: "Very happy", count: 104, color: "lightblue"}, //Object that contains the name, count, and color for slice of the pie chart
+        {name: "Happy", count: 63, color: "orange"}, //Object that contains the name, count, and color for slice of the pie chart
+        {name: "Neutral", count: 87, color: "lightgreen"}, //Object that contains the name, count, and color for slice of the pie chart
+        {name: "Unhappy", count: 51, color: "pink"}, //Object that contains the name, count, and color for slice of the pie chart
+        {name: "Very unhappy", count: 26, color: "yellow"}, //Object that contains the name, count, and color for slice of the pie chart
+        {name: "No Comment", count: 18, color: "silver"} //Object that contains the name, count, and color for slice of the pie chart
+        ]; // end of JavaScript array
+
+        let cx = document.querySelector("canvas").getContext("2d"); //gets the html canvas element and puts it into the variable cx
+        let total = resultsTwo.reduce((sum, {count}) => sum + count, 0) //gathers the total of all the objects in the array using the reduce function
+        let currentAngle = -0.5 * Math.PI; // declares the first angle to pi/2
+        for (let result of resultsTwo) { //for loop that loops through each object in the array of objects
+            var pieRadius = 150; //declares the pie charts radius
+            let sliceAngle = (result.count / total) * 2 * Math.PI; // finds the end angle for the poition of the slice
+            cx.beginPath() //starts the path for the pie chart
+            cx.arc(200, 200, pieRadius, currentAngle, currentAngle + sliceAngle); //sets the starting X and Y points, the radius, and the start and end angle
+            currentAngle += sliceAngle; // Makes the end angle the new starting angle for the next slice
+            cx.lineTo(200,200); // Draws a line to the center point to complete the slice drawing
+            cx.fillStyle = result.color; // sets the Fill color to the objects color
+            cx.fill(); //Fills the portion of the circle
+            var labelX = 200  + (pieRadius + 25) * Math.cos(currentAngle - (sliceAngle /2) + 25); //Determines the x axis of where to start the text
+            var labelY = 200  + (pieRadius + 25) * Math.sin(currentAngle - (sliceAngle /2) + 25); //Determines the y axis of where to start the text
+            cx.fillStyle = "black"; //sets the fill color for the text to black
+            cx.font = "bold 10px Arial"; //sets the font size and font for the text.
+            cx.fillText(result.name, labelX, labelY); //puts the text in the location provided and gets the name from the object array
+        } // end of for loop
+
+        total = resultsOne.reduce((sum, {count}) => sum + count, 0) //gathers the total of all the objects in the array using the reduce function
+        currentAngle = -0.5 * Math.PI; // declares the first angle to pi/2
+        for (let result of resultsOne) { //for loop that loops through each object in the array of objects
+            var pieRadius = 175; //declares the pie charts radius
+            let sliceAngle = (result.count / total) * 2 * Math.PI; // finds the end angle for the poition of the slice
+            cx.beginPath(); //starts the path for the pie chart
+            cx.arc(600, 200, pieRadius, currentAngle, currentAngle + sliceAngle); //sets the starting X and Y points, the radius, and the start and end angle
+            currentAngle += sliceAngle; // Makes the end angle the new starting angle for the next slice
+            cx.lineTo(600,200); // Draws a line to the center point to complete the slice drawing
+            cx.fillStyle = result.color; // sets the Fill color to the objects color
+            cx.fill(); //Fills the portion of the circle
+            var labelX = 600  + (pieRadius) * Math.cos(currentAngle - (sliceAngle /2) + 25); //Determines the x axis of where to start the text
+            var labelY = 200  + (pieRadius) * Math.sin(currentAngle - (sliceAngle /2) ); //Determines the y axis of where to start the text
+            cx.fillStyle = "black"; //sets the fill color for the text to black
+            cx.font = "bold 10px Arial"; //sets the font size and font for the text.
+            cx.fillText(result.name, labelX, labelY); //puts the text in the location provided and gets the name from the object array
+        } // end of for loop
+
+
+    </script>
+    
+</body>
+</html>
